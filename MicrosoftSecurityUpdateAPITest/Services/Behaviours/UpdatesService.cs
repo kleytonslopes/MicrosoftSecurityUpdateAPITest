@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using MicrosoftSecurityUpdateAPITest.Models;
 using MicrosoftSecurityUpdateAPITest.Repository;
 using Newtonsoft.Json;
@@ -14,25 +15,35 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
     {
         private readonly IHttpClientFactory httpClientFactory;
         private readonly IUpdateRepository updateRepository;
+        private readonly ILogger logger;
 
-        public UpdatesService(IServiceProvider serviceProvider)
+        public UpdatesService(IServiceProvider serviceProvider, ILogger<UpdatesService> logger)
         {
             httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
             updateRepository = serviceProvider.GetService<IUpdateRepository>();
+
+            this.logger = logger;
         }
 
         public async Task CheckAndSaveUpdatesAsync()
         {
-            var response = RequestUpdates();
-
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            try
             {
-                var json = await response.Content.ReadAsStringAsync();
+                var response = RequestUpdates();
 
-                UpdatesModel updatesModel = JsonConvert.DeserializeObject<UpdatesModel>(json);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
 
-                if (updatesModel != null)
-                    await SaveUpdatesAsync(updatesModel);
+                    UpdatesModel updatesModel = JsonConvert.DeserializeObject<UpdatesModel>(json);
+
+                    if (updatesModel != null)
+                        await SaveUpdatesAsync(updatesModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Erro em CheckAndSaveUpdatesAsync: {ex}", ex);
             }
         }
 
@@ -40,7 +51,7 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
         {
             int apiVersion = DateTime.Now.Year;
 
-            var request = new HttpRequestMessage(HttpMethod.Get, string.Format("updates?api-version=2020"));
+            var request = new HttpRequestMessage(HttpMethod.Get, string.Format("updates?api-version={0}", apiVersion));
             var client = httpClientFactory.CreateClient(Globals.HTTP_CLIENT_MICROSOFT_API);
 
             var response = client.SendAsync(request).Result;
@@ -58,14 +69,14 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
                 {
                     try
                     {
-                        await updateRepository.SaveUpdateItemAsync(item);
+                        UpdateItemModel updateItemModelTemp = await updateRepository.GetUpdateItemByIdAsync(item.Id);
+                        if (updateItemModelTemp == null)
+                            await updateRepository.SaveUpdateItemAsync(item);
                     }
                     catch (Exception ex)
                     {
-
-                        throw;
+                        logger.LogError("Erro em SaveUpdatesAsync: {ex}", ex);
                     }
-                   
                 }
             }
         }

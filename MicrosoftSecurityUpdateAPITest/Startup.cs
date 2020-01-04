@@ -8,6 +8,7 @@ using MicrosoftSecurityUpdateAPITest.Core.Connection;
 using MicrosoftSecurityUpdateAPITest.Core.Connection.Behaviours;
 using MicrosoftSecurityUpdateAPITest.Repository;
 using MicrosoftSecurityUpdateAPITest.Repository.Behaviours;
+using MicrosoftSecurityUpdateAPITest.Repository.Mappings.Utils;
 using MicrosoftSecurityUpdateAPITest.Services;
 using MicrosoftSecurityUpdateAPITest.Services.Behaviours;
 using MicrosoftSecurityUpdateAPITest.Services.Hosted;
@@ -28,6 +29,8 @@ namespace MicrosoftSecurityUpdateAPITest
 
             Globals.SetTimeCheckUpdates(Environment.GetEnvironmentVariable("TIMER_CHECK_UPDATES_IN_MINUTES"));
             Globals.SetConnectionString(Environment.GetEnvironmentVariable("CONNECTION_STRING"));
+
+            MappingSystem.Register();
         }
 
         public IConfiguration Configuration { get; }
@@ -81,9 +84,6 @@ namespace MicrosoftSecurityUpdateAPITest
 
             app.UseSpa(spa =>
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
                 spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())

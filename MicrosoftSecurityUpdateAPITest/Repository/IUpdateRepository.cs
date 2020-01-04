@@ -9,5 +9,6 @@ namespace MicrosoftSecurityUpdateAPITest.Repository
     public interface IUpdateRepository
     {
         Task SaveUpdateItemAsync(UpdateItemModel updateItemModel);
+        Task<UpdateItemModel> GetUpdateItemByIdAsync(string id);
     }
 }

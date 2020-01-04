@@ -19,6 +19,11 @@ namespace MicrosoftSecurityUpdateAPITest
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging(log => 
+                {
+                    log.AddConsole();
+                    log.AddDebug();
+                })
                 .UseStartup<Startup>();
     }
 }
