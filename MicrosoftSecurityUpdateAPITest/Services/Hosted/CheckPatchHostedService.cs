@@ -34,8 +34,8 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Hosted
 
             while (isChecking)
             {
-                if(patchService.NotProcessing)
-                    patchService.CheckAndSavePatchesAsync();
+                //if(patchService.NotProcessing)
+                //    patchService.CheckAndSavePatchesAsync();
 
                 Thread.Sleep(Globals.Minutes);
             }

@@ -18,6 +18,8 @@ namespace MicrosoftSecurityUpdateAPITest.Repository.Mappings.Utils
             {
                 config.AddMap(new PatchItemMapping());
                 config.AddMap(new RemediationMapping());
+
+                config.AddMap(new PatchCatalogTemplateMapping());
             });
 
             isRegistered = true;

@@ -41,5 +41,6 @@ namespace MicrosoftSecurityUpdateAPITest.Repository.Scripts
         WHERE 
             updite_id = @updite_id;
         ";
+
     }
 }

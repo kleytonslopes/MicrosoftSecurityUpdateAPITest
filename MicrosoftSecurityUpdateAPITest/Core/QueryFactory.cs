@@ -49,6 +49,18 @@ namespace MicrosoftSecurityUpdateAPITest.Core
             return result;
         }
 
+        public async Task<IEnumerable<T>> SelectListAsync<T>()
+        {
+            ValidateQuery();
+
+            IEnumerable<T> result = await connection.QueryAsync<T>(_query, parameters);
+
+            if (result == null)
+                return default(IEnumerable<T>);
+
+            return result;
+        }
+
         public void SetQuery(string query)
         {
             if (isDisposed)
@@ -89,10 +101,15 @@ namespace MicrosoftSecurityUpdateAPITest.Core
                 isDisposed = true;
             }
         }
+
+
         private void CloseConnection()
         {
             if (connection != null)
+            {
                 connection.Close();
+                connection.Dispose();
+            }
         }
 
         private bool ValidateQuery()

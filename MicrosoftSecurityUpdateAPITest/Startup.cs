@@ -59,9 +59,11 @@ namespace MicrosoftSecurityUpdateAPITest
             services.AddSingleton<IPatchService, PatchService>();
             services.AddSingleton<ICvrfdocService, CvrfdocService>();
             services.AddSingleton<IRemediationService, RemediationService>();
+            services.AddSingleton<IPatchCatalogService, PatchCatalogService>();
 
             services.AddTransient<IPatchRepository, PatchRepository>();
             services.AddTransient<IRemediationRepository, RemediationRepository>();
+            services.AddTransient<IPatchCatalogTemplateRepository, PatchCatalogTemplateRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
