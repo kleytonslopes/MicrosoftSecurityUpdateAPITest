@@ -11,38 +11,38 @@ using MySql.Data.MySqlClient;
 
 namespace MicrosoftSecurityUpdateAPITest.Repository.Behaviours
 {
-    public class UpdateRepository : IUpdateRepository
+    public class PatchRepository : IPatchRepository
     {
         private readonly IDbConnectionFactory dbConnectionFactory;
 
-        public UpdateRepository(IServiceProvider serviceProvider)
+        public PatchRepository(IServiceProvider serviceProvider)
         {
             dbConnectionFactory = serviceProvider.GetService<IDbConnectionFactory>();
         }
 
-        public async Task SaveUpdateItemAsync(UpdateItemModel updateItemModel)
+        public async Task SavePatchItemAsync(PatchItemModel patchItemModel)
         {
             using (QueryFactory query = new QueryFactory(dbConnectionFactory))
             {
                 var parameters = new
                 {
-                    updite_id = updateItemModel.Id,
-                    updite_alias = updateItemModel.Alias,
-                    updite_document_title = updateItemModel.DocumentTitle,
-                    updite_severity = updateItemModel.Severity,
-                    updite_initial_release_date = updateItemModel.InitialReleaseDate,
-                    updite_current_release_date = updateItemModel.CurrentReleaseDate,
-                    updite_cvrf_url = updateItemModel.CvrfUrl,
+                    updite_id = patchItemModel.Id,
+                    updite_alias = patchItemModel.Alias,
+                    updite_document_title = patchItemModel.DocumentTitle,
+                    updite_severity = patchItemModel.Severity,
+                    updite_initial_release_date = patchItemModel.InitialReleaseDate,
+                    updite_current_release_date = patchItemModel.CurrentReleaseDate,
+                    updite_cvrf_url = patchItemModel.CvrfUrl,
                 };
 
-                query.SetQuery(UpdateItemScripts.QueryInsert);
+                query.SetQuery(PatchItemScripts.QueryInsert);
                 query.AddParameter(parameters);
 
                 await query.ExecuteAsync();
             }
         }
 
-        public async Task<UpdateItemModel> GetUpdateItemByIdAsync(string id)
+        public async Task<PatchItemModel> GetPatchItemByIdAsync(string id)
         {
             using(QueryFactory query = new QueryFactory(dbConnectionFactory))
             {
@@ -51,10 +51,10 @@ namespace MicrosoftSecurityUpdateAPITest.Repository.Behaviours
                     updite_id = id
                 };
 
-                query.SetQuery(UpdateItemScripts.QuerySelectById);
+                query.SetQuery(PatchItemScripts.QuerySelectById);
                 query.AddParameter(parameters);
 
-                return await query.SelectFirstOrDefaultAsync<UpdateItemModel>();
+                return await query.SelectFirstOrDefaultAsync<PatchItemModel>();
             }
         }
     }

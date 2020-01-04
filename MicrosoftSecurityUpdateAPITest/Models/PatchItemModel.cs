@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MicrosoftSecurityUpdateAPITest.Models
 {
-    public class UpdateItemModel
+    public class PatchItemModel
     {
         public string Id { get; set; }
         public string Alias { get; set; }

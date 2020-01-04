@@ -15,44 +15,44 @@ using Newtonsoft.Json;
 
 namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
 {
-    public class UpdatesService : IUpdatesService
+    public class PatchService : IPatchService
     {
         private readonly IHttpClientFactory httpClientFactory;
-        private readonly IUpdateRepository updateRepository;
+        private readonly IPatchRepository patchRepository;
         private readonly IRemediationService remediationService;
         private readonly ILogger logger;
         private bool isProcessing;
         public bool NotProcessing => !isProcessing;
 
-        public UpdatesService(IServiceProvider serviceProvider, ILogger<UpdatesService> logger)
+        public PatchService(IServiceProvider serviceProvider, ILogger<PatchService> logger)
         {
             httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
             remediationService = serviceProvider.GetService<IRemediationService>();
-            updateRepository = serviceProvider.GetService<IUpdateRepository>();
+            patchRepository = serviceProvider.GetService<IPatchRepository>();
 
             this.logger = logger;
         }
 
-        public async Task CheckAndSaveUpdatesAsync()
+        public async Task CheckAndSavePatchesAsync()
         {
             try
             {
                 isProcessing = true;
-                var response = RequestUpdates();
+                var response = RequestPatches();
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var json = await response.Content.ReadAsStringAsync();
 
-                    UpdatesModel updatesModel = JsonConvert.DeserializeObject<UpdatesModel>(json);
+                    PatchModel patchModel = JsonConvert.DeserializeObject<PatchModel>(json);
 
-                    if (updatesModel != null)
-                        await SaveUpdatesAsync(updatesModel);
+                    if (patchModel != null)
+                        await SavePatchesAsync(patchModel);
                 }
             }
             catch (Exception ex)
             {
-                logger.LogError("Erro em CheckAndSaveUpdatesAsync: {ex}", ex);
+                logger.LogError("Erro em CheckAndSavePatchAsync: {ex}", ex);
             }
             finally
             {
@@ -60,7 +60,7 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
             }
         }
 
-        private HttpResponseMessage RequestUpdates()
+        private HttpResponseMessage RequestPatches()
         {
             int apiVersion = DateTime.Now.Year;
 
@@ -74,23 +74,23 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
             return response;
         }
 
-        private async Task SaveUpdatesAsync(UpdatesModel updatesModel)
+        private async Task SavePatchesAsync(PatchModel patchModel)
         {
-            if (updatesModel.Value.Any())
+            if (patchModel.Value.Any())
             {
-                foreach (UpdateItemModel item in updatesModel.Value)
+                foreach (PatchItemModel patchItem in patchModel.Value)
                 {
                     try
                     {
-                        UpdateItemModel updateItemModelTemp = await updateRepository.GetUpdateItemByIdAsync(item.Id);
-                        if (updateItemModelTemp == null)
-                            await updateRepository.SaveUpdateItemAsync(item);
+                        PatchItemModel patchItemModelTemp = await patchRepository.GetPatchItemByIdAsync(patchItem.Id);
+                        if (patchItemModelTemp == null)
+                            await patchRepository.SavePatchItemAsync(patchItem);
 
-                        await remediationService.CheckAndSaveRemediation(item);
+                        await remediationService.CheckAndSaveRemediation(patchItem);
                     }
                     catch (Exception ex)
                     {
-                        logger.LogError("Erro em SaveUpdatesAsync: {ex}", ex);
+                        logger.LogError("Erro em SavePatchesAsync: {ex}", ex);
                     }
                 }
             }

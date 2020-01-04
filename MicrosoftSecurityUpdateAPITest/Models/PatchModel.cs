@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace MicrosoftSecurityUpdateAPITest.Models
 {
-    public class UpdatesModel
+    public class PatchModel
     {
         [JsonProperty("@odata.context")]
         public string OdataContext { get; set; }
 
-        public IEnumerable<UpdateItemModel> Value {get;set;}
+        public IEnumerable<PatchItemModel> Value {get;set;}
     }
 }

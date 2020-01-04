@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MicrosoftSecurityUpdateAPITest.Repository.Scripts
 {
-    public static class UpdateItemScripts
+    public static class PatchItemScripts
     {
         public static string QueryInsert => $@"
         INSERT INTO t_update_item (

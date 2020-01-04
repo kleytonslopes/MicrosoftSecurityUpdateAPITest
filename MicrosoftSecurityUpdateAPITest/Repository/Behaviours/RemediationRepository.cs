@@ -38,14 +38,14 @@ namespace MicrosoftSecurityUpdateAPITest.Repository.Behaviours
             }
         }
 
-        public async Task<RemediationModel> GetRemediationByIdAsync(string remediationId, string updateItemid)
+        public async Task<RemediationModel> GetRemediationByIdAsync(string remediationId, string patchItemid)
         {
             using (QueryFactory query = new QueryFactory(dbConnectionFactory))
             {
                 var parameters = new
                 {
                     remedi_id = remediationId,
-                    updite_id = updateItemid
+                    updite_id = patchItemid
                 };
 
                 query.SetQuery(RemediationScripts.QuerySelectById);

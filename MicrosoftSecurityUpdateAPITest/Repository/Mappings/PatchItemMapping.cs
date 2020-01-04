@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace MicrosoftSecurityUpdateAPITest.Repository.Mappings
 {
-    public class UpdateItemMapping : EntityMap<UpdateItemModel>
+    public class PatchItemMapping : EntityMap<PatchItemModel>
     {
-        public UpdateItemMapping()
+        public PatchItemMapping()
         {
             Map(p => p.Id).ToColumn("updite_id");
             Map(p => p.Alias).ToColumn("updite_alias");

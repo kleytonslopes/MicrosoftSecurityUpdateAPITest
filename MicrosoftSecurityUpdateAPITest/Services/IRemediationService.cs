@@ -8,6 +8,6 @@ namespace MicrosoftSecurityUpdateAPITest.Services
 {
     public interface IRemediationService
     {
-        Task CheckAndSaveRemediation(UpdateItemModel item);
+        Task CheckAndSaveRemediation(PatchItemModel item);
     }
 }

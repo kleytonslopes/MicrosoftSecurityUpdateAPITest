@@ -19,7 +19,7 @@ namespace MicrosoftSecurityUpdateAPITest
         /// Checar API em minutos
         /// </summary>
         /// <param name="minutes"></param>
-        internal static void SetTimeCheckUpdates(int minutes)
+        internal static void SetTimeCheckPatch(int minutes)
         {
             _minutes = minutes * 60000;
         }
@@ -27,9 +27,9 @@ namespace MicrosoftSecurityUpdateAPITest
         /// Checar API em minutos
         /// </summary>
         /// <param name="minutes"></param>
-        internal static void SetTimeCheckUpdates(string minutes)
+        internal static void SetTimeCheckPatch(string minutes)
         {
-            SetTimeCheckUpdates(Convert.ToInt32(minutes));
+            SetTimeCheckPatch(Convert.ToInt32(minutes));
         }
 
         internal static void SetConnectionString(string connectionString)

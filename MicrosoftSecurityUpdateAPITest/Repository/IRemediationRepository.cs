@@ -9,6 +9,6 @@ namespace MicrosoftSecurityUpdateAPITest.Repository
     public interface IRemediationRepository
     {
         Task SaveRemediationAsync(RemediationModel remediationModel);
-        Task<RemediationModel> GetRemediationByIdAsync(string remediationId, string updateItemid);
+        Task<RemediationModel> GetRemediationByIdAsync(string remediationId, string patchItemid);
     }
 }

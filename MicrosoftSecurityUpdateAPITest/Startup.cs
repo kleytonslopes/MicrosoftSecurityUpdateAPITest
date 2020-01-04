@@ -27,7 +27,7 @@ namespace MicrosoftSecurityUpdateAPITest
             HTTP_CLIENT_MICROSOFT_API_URI = Environment.GetEnvironmentVariable("HTTP_CLIENT_MICROSOFT_API_URI");
             HTTP_CLIENT_MICROSOFT_API_KEY = Environment.GetEnvironmentVariable("HTTP_CLIENT_MICROSOFT_API_KEY");
 
-            Globals.SetTimeCheckUpdates(Environment.GetEnvironmentVariable("TIMER_CHECK_UPDATES_IN_MINUTES"));
+            Globals.SetTimeCheckPatch(Environment.GetEnvironmentVariable("TIMER_CHECK_PATCH_IN_MINUTES"));
             Globals.SetConnectionString(Environment.GetEnvironmentVariable("CONNECTION_STRING"));
 
             MappingSystem.Register();
@@ -38,7 +38,7 @@ namespace MicrosoftSecurityUpdateAPITest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHostedService<CheckUpdatesHostedService>();
+            services.AddHostedService<CheckPatchHostedService>();
 
             services.AddHttpClient(Globals.HTTP_CLIENT_MICROSOFT_API, cli => {
                 cli.BaseAddress = new Uri(HTTP_CLIENT_MICROSOFT_API_URI);
@@ -56,11 +56,11 @@ namespace MicrosoftSecurityUpdateAPITest
 
             services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
 
-            services.AddSingleton<IUpdatesService, UpdatesService>();
+            services.AddSingleton<IPatchService, PatchService>();
             services.AddSingleton<ICvrfdocService, CvrfdocService>();
             services.AddSingleton<IRemediationService, RemediationService>();
 
-            services.AddTransient<IUpdateRepository, UpdateRepository>();
+            services.AddTransient<IPatchRepository, PatchRepository>();
             services.AddTransient<IRemediationRepository, RemediationRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

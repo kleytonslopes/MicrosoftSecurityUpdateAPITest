@@ -16,7 +16,7 @@ namespace MicrosoftSecurityUpdateAPITest.Repository.Mappings.Utils
 
             Dapper.FluentMap.FluentMapper.Initialize(config => 
             {
-                config.AddMap(new UpdateItemMapping());
+                config.AddMap(new PatchItemMapping());
                 config.AddMap(new RemediationMapping());
             });
 

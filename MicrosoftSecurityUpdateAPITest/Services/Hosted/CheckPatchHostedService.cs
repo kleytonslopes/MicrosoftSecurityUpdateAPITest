@@ -8,12 +8,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MicrosoftSecurityUpdateAPITest.Services.Hosted
 {
-    public class CheckUpdatesHostedService : IHostedService
+    public class CheckPatchHostedService : IHostedService
     {
-        private readonly IUpdatesService updatesService;
-        public CheckUpdatesHostedService(IServiceProvider serviceProvider)
+        private readonly IPatchService patchService;
+        public CheckPatchHostedService(IServiceProvider serviceProvider)
         {
-            updatesService = serviceProvider.GetService<IUpdatesService>();
+            patchService = serviceProvider.GetService<IPatchService>();
         }
 
         private bool isChecking;
@@ -21,21 +21,21 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Hosted
         {
             Task.Factory.StartNew(() => 
             {
-                StartCheckUpdates();
+                StartCheckPatch();
             });
 
             return Task.CompletedTask;
         }
 
-        private void StartCheckUpdates()
+        private void StartCheckPatch()
         {
             isChecking = true;
 
 
             while (isChecking)
             {
-                if(updatesService.NotProcessing)
-                    updatesService.CheckAndSaveUpdatesAsync();
+                if(patchService.NotProcessing)
+                    patchService.CheckAndSavePatchesAsync();
 
                 Thread.Sleep(Globals.Minutes);
             }

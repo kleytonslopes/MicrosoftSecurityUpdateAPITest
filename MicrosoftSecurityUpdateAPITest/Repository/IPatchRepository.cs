@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MicrosoftSecurityUpdateAPITest.Repository
 {
-    public interface IUpdateRepository
+    public interface IPatchRepository
     {
-        Task SaveUpdateItemAsync(UpdateItemModel updateItemModel);
-        Task<UpdateItemModel> GetUpdateItemByIdAsync(string id);
+        Task SavePatchItemAsync(PatchItemModel patchItemModel);
+        Task<PatchItemModel> GetPatchItemByIdAsync(string id);
     }
 }

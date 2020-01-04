@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MicrosoftSecurityUpdateAPITest.Services
 {
-    public interface IUpdatesService
+    public interface IPatchService
     {
         bool NotProcessing { get; }
 
@@ -13,6 +13,6 @@ namespace MicrosoftSecurityUpdateAPITest.Services
         /// Checa e salva atualizações
         /// </summary>
         /// <returns></returns>
-        Task CheckAndSaveUpdatesAsync();
+        Task CheckAndSavePatchesAsync();
     }
 }
