@@ -15,7 +15,7 @@ namespace MicrosoftSecurityUpdateAPITest.Models
         {
             get
             {
-                if (URL.Contains(Description))
+                if (URL.Contains($"q={Description}"))
                     return true;
                 return false;
             }

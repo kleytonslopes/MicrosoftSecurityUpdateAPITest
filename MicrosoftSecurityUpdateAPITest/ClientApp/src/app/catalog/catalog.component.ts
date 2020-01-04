@@ -30,6 +30,8 @@ interface Patches
     remediationDescription: string;
     patchAlias: string;
     remediationUrl: string;
+    strPatchInitialReleaseDate: string;
+    strPatchCurrentReleaseDate: string;
 }
 
 

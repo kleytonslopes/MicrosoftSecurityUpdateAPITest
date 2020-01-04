@@ -185,6 +185,16 @@ namespace MicrosoftSecurityUpdateAPITest.Models.Templates
         public string Type { get; set; }
 
         public bool NotIsSecurityUpdate => SubType != "Security Update";
+
+        public bool NotHasCatalogUrl
+        {
+            get
+            {
+                if (!URL.Contains($"q=KB{Description}"))
+                    return true;
+                return false;
+            }
+        }
     }
 
     [XmlRoot(ElementName = "Remediations", Namespace = "http://www.icasi.org/CVRF/schema/vuln/1.1")]

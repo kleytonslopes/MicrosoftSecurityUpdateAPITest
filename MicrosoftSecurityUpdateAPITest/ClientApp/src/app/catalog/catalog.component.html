@@ -10,13 +10,18 @@
     <thead>
       <tr>
         <th>Patch</th>
+        <th>Data Release Inicial</th>
+        <th>Data Release Final</th>
         <th>KB</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let patch of patchesFiltered">
         <td>{{ patch.patchAlias }}</td>
+        <td>{{ patch.strPatchInitialReleaseDate }}</td>
+        <td>{{ patch.strPatchCurrentReleaseDate }}</td>
         <td><a href="{{ patch.remediationUrl }}" target="_blank">{{ patch.remediationDescription }}</a></td>
       </tr>
     </tbody>
   </table>
+  

@@ -11,8 +11,10 @@ namespace MicrosoftSecurityUpdateAPITest.Models.Templates
     public class PatchCatalogTemplate
     {
         public string PatchAlias { get; set; }
-        public string PatchInitialReleaseDate { get; set; }
-        public string PatchCurrentReleaseDate { get; set; }
+        public DateTime PatchInitialReleaseDate { get; set; }
+        public string strPatchInitialReleaseDate => PatchInitialReleaseDate.ToString("dd/MM/yyyy");
+        public DateTime PatchCurrentReleaseDate { get; set; }
+        public string strPatchCurrentReleaseDate => PatchCurrentReleaseDate.ToString("dd/MM/yyyy");
         public string RemediationDescription { get; set; }
         public string RemediationUrl { get; set; }
     }

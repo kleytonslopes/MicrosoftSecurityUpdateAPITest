@@ -19,6 +19,7 @@ namespace MicrosoftSecurityUpdateAPITest.Repository.Scripts
         	t_update_item IT 
         INNER JOIN 
         	t_remediation RE ON IT. updite_id = RE.updite_id
+        ORDER BY 3 DESC
         ";
     }
 }

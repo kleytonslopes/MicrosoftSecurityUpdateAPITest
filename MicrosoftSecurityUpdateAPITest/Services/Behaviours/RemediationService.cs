@@ -71,6 +71,9 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
             string patchItemId = patchItemModel.Id;
             string remediationId = remediation.Description;
 
+            if (remediation.NotHasCatalogUrl)
+                return;
+
             RemediationModel remediationModel = await remediationRepository.GetRemediationByIdAsync(remediationId, patchItemId);
 
             if (remediationModel != null)

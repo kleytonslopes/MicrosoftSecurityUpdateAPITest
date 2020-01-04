@@ -108,6 +108,7 @@ namespace MicrosoftSecurityUpdateAPITest.Core
             if (connection != null)
             {
                 connection.Close();
+                MySqlConnection.ClearPool(connection);
                 connection.Dispose();
             }
         }
