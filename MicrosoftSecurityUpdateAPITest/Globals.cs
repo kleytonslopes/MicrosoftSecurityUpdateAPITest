@@ -8,9 +8,11 @@ namespace MicrosoftSecurityUpdateAPITest
     internal static class Globals
     {
         private static int _minutes;
+        private static string _connectionString;
 
         public const string HTTP_CLIENT_MICROSOFT_API = "msrc_microsoft";
         public static int Minutes => _minutes;
+        public static string ConnectionString => _connectionString;
 
         /// <summary>
         /// Checar API em minutos
@@ -27,6 +29,11 @@ namespace MicrosoftSecurityUpdateAPITest
         internal static void SetTimeCheckUpdates(string minutes)
         {
             SetTimeCheckUpdates(Convert.ToInt32(minutes));
+        }
+
+        internal static void SetConnectionString(string connectionString)
+        {
+            _connectionString = connectionString;
         }
     }
 }

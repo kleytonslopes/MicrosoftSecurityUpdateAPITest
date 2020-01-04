@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using MicrosoftSecurityUpdateAPITest.Models;
+using MicrosoftSecurityUpdateAPITest.Repository;
 using Newtonsoft.Json;
 
 namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
@@ -12,10 +13,12 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
     public class UpdatesService : IUpdatesService
     {
         private readonly IHttpClientFactory httpClientFactory;
+        private readonly IUpdateRepository updateRepository;
 
         public UpdatesService(IServiceProvider serviceProvider)
         {
             httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
+            updateRepository = serviceProvider.GetService<IUpdateRepository>();
         }
 
         public async Task CheckAndSaveUpdatesAsync()
@@ -29,7 +32,7 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
                 UpdatesModel updatesModel = JsonConvert.DeserializeObject<UpdatesModel>(json);
 
                 if (updatesModel != null)
-                    SaveUpdates(updatesModel);
+                    await SaveUpdatesAsync(updatesModel);
             }
         }
 
@@ -47,13 +50,22 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
             return response;
         }
 
-        private void SaveUpdates(UpdatesModel updatesModel)
+        private async Task SaveUpdatesAsync(UpdatesModel updatesModel)
         {
             if (updatesModel.Value.Any())
             {
                 foreach (UpdateItemModel item in updatesModel.Value)
                 {
-                    //check update
+                    try
+                    {
+                        await updateRepository.SaveUpdateItemAsync(item);
+                    }
+                    catch (Exception ex)
+                    {
+
+                        throw;
+                    }
+                   
                 }
             }
         }

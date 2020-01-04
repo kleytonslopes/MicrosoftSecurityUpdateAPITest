@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MicrosoftSecurityUpdateAPITest.Core.Connection;
+using MicrosoftSecurityUpdateAPITest.Core.Connection.Behaviours;
+using MicrosoftSecurityUpdateAPITest.Repository;
+using MicrosoftSecurityUpdateAPITest.Repository.Behaviours;
 using MicrosoftSecurityUpdateAPITest.Services;
 using MicrosoftSecurityUpdateAPITest.Services.Behaviours;
 using MicrosoftSecurityUpdateAPITest.Services.Hosted;
@@ -23,6 +27,7 @@ namespace MicrosoftSecurityUpdateAPITest
             HTTP_CLIENT_MICROSOFT_API_KEY = Environment.GetEnvironmentVariable("HTTP_CLIENT_MICROSOFT_API_KEY");
 
             Globals.SetTimeCheckUpdates(Environment.GetEnvironmentVariable("TIMER_CHECK_UPDATES_IN_MINUTES"));
+            Globals.SetConnectionString(Environment.GetEnvironmentVariable("CONNECTION_STRING"));
         }
 
         public IConfiguration Configuration { get; }
@@ -38,7 +43,10 @@ namespace MicrosoftSecurityUpdateAPITest
                 cli.DefaultRequestHeaders.Add("api-key", HTTP_CLIENT_MICROSOFT_API_KEY);
             });
 
-            services.AddTransient<IUpdatesService, UpdatesService>();
+            services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
+
+            services.AddSingleton<IUpdatesService, UpdatesService>();
+            services.AddTransient<IUpdateRepository, UpdateRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
