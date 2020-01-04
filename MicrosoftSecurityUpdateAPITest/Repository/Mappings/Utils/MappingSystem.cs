@@ -17,6 +17,7 @@ namespace MicrosoftSecurityUpdateAPITest.Repository.Mappings.Utils
             Dapper.FluentMap.FluentMapper.Initialize(config => 
             {
                 config.AddMap(new UpdateItemMapping());
+                config.AddMap(new RemediationMapping());
             });
 
             isRegistered = true;

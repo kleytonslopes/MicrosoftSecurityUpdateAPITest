@@ -7,6 +7,8 @@ namespace MicrosoftSecurityUpdateAPITest.Services
 {
     public interface IUpdatesService
     {
+        bool NotProcessing { get; }
+
         /// <summary>
         /// Checa e salva atualizações
         /// </summary>
