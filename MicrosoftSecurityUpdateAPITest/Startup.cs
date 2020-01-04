@@ -24,11 +24,11 @@ namespace MicrosoftSecurityUpdateAPITest
         {
             Configuration = configuration;
 
-            HTTP_CLIENT_MICROSOFT_API_URI = Environment.GetEnvironmentVariable("HTTP_CLIENT_MICROSOFT_API_URI");
-            HTTP_CLIENT_MICROSOFT_API_KEY = Environment.GetEnvironmentVariable("HTTP_CLIENT_MICROSOFT_API_KEY");
+            HTTP_CLIENT_MICROSOFT_API_URI = Configuration.GetValue<string>("HTTP_CLIENT_MICROSOFT_API_URI");//Environment.GetEnvironmentVariable("HTTP_CLIENT_MICROSOFT_API_URI");
+            HTTP_CLIENT_MICROSOFT_API_KEY = Configuration.GetValue<string>("HTTP_CLIENT_MICROSOFT_API_KEY");//Environment.GetEnvironmentVariable("HTTP_CLIENT_MICROSOFT_API_KEY");
 
-            Globals.SetTimeCheckPatch(Environment.GetEnvironmentVariable("TIMER_CHECK_PATCH_IN_MINUTES"));
-            Globals.SetConnectionString(Environment.GetEnvironmentVariable("CONNECTION_STRING"));
+            Globals.SetTimeCheckPatch(Configuration.GetValue<string>("TIMER_CHECK_PATCH_IN_MINUTES"));
+            Globals.SetConnectionString(Configuration.GetValue<string>("CONNECTION_STRING"));
 
             MappingSystem.Register();
         }
