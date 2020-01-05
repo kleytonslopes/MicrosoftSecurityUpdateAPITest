@@ -38,24 +38,26 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
             try
             {
                 isProcessing = true;
-                var response = RequestPatches();
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                Task checkUpdatesTask = Task.Factory.StartNew(() =>
                 {
-                    var json = await response.Content.ReadAsStringAsync();
+                    var response = RequestPatches();
 
-                    PatchModel patchModel = JsonConvert.DeserializeObject<PatchModel>(json);
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var json = response.Content.ReadAsStringAsync().Result;
 
-                    if (patchModel != null)
-                        await SavePatchesAsync(patchModel);
-                }
+                        PatchModel patchModel = JsonConvert.DeserializeObject<PatchModel>(json);
+
+                        if (patchModel != null)
+                            SavePatchesAsync(patchModel).Wait();
+
+                        isProcessing = false;
+                    }
+                });
             }
             catch (Exception ex)
             {
                 logger.LogError("Erro em CheckAndSavePatchAsync: {ex}", ex);
-            }
-            finally
-            {
                 isProcessing = false;
             }
         }
