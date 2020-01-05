@@ -36,7 +36,7 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
                 return;
             }
 
-            Cvrfdoc cvrfdoc = await cvrfdocService.GetCvrfdocFromUrlAsync(patchItemModel.CvrfUrl);
+            Cvrfdoc cvrfdoc = await cvrfdocService.GetCvrfdocFromUrlAsync(patchItemModel.Id);
 
             if (cvrfdoc != null)
             {
@@ -56,7 +56,7 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
         }
         private async Task ProcessVulnerabilityAsync(Vulnerability vulnerability, PatchItemModel patchItemModel)
         {
-            List<Remediation> remediations = vulnerability.Remediations.Remediation;
+            List<Remediation> remediations = vulnerability.Remediations;
 
             foreach (Remediation remediation in remediations)
             {
@@ -69,7 +69,7 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
                 return;
 
             string patchItemId = patchItemModel.Id;
-            string remediationId = remediation.Description;
+            string remediationId = remediation.Description.Value;
 
             if (remediation.NotHasCatalogUrl)
                 return;

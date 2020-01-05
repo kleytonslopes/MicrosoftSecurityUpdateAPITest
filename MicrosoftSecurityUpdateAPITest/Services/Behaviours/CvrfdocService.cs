@@ -9,6 +9,7 @@ using MicrosoftSecurityUpdateAPITest.Models.Templates;
 using System.Xml.Serialization;
 using System.IO;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
 {
@@ -24,17 +25,15 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
             this.logger = logger;
         }
 
-        public async Task<Cvrfdoc> GetCvrfdocFromUrlAsync(string cvrfUrl)
+        public async Task<Cvrfdoc> GetCvrfdocFromUrlAsync(string cvrfId)
         {
-            var response = RequestCvrfdoc(cvrfUrl);
+            var response = RequestCvrfdoc(cvrfId);
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                var xml = await response.Content.ReadAsStringAsync();
-
-                var ms = new MemoryStream(Encoding.UTF8.GetBytes(xml));
-                XmlSerializer serializer = new XmlSerializer(typeof(Cvrfdoc));
-                Cvrfdoc cvrfdoc = ((Cvrfdoc)serializer.Deserialize(ms));
+                var json = await response.Content.ReadAsStringAsync();
+                
+                Cvrfdoc cvrfdoc = JsonConvert.DeserializeObject<Cvrfdoc>(json);
 
                 return cvrfdoc;
             }
@@ -42,12 +41,14 @@ namespace MicrosoftSecurityUpdateAPITest.Services.Behaviours
             return null;
         }
 
-        private HttpResponseMessage RequestCvrfdoc(string cvrfUrl)
+        private HttpResponseMessage RequestCvrfdoc(string cvrfIdDocument)
         {
-            var client = httpClientFactory.CreateClient(Globals.HTTP_CLIENT_MICROSOFT_API);
-            client.BaseAddress = new Uri(cvrfUrl);
+            int apiVersion = DateTime.Now.Year;
 
-            var response = client.GetAsync(cvrfUrl).Result;
+            var request = new HttpRequestMessage(HttpMethod.Get, string.Format("cvrf/{0}?api-version={1}", cvrfIdDocument, apiVersion));
+            var client = httpClientFactory.CreateClient(Globals.HTTP_CLIENT_MICROSOFT_API);
+
+            var response = client.SendAsync(request).Result;
 
             response.EnsureSuccessStatusCode();
 

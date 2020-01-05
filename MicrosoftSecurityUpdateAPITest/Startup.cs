@@ -43,14 +43,6 @@ namespace MicrosoftSecurityUpdateAPITest
             services.AddHttpClient(Globals.HTTP_CLIENT_MICROSOFT_API, cli => {
                 cli.BaseAddress = new Uri(HTTP_CLIENT_MICROSOFT_API_URI);
                 cli.DefaultRequestHeaders.Add("Accept", "application/json");
-                cli.DefaultRequestHeaders.Add("Accept", "application/xml");
-                cli.DefaultRequestHeaders.Add("api-key", HTTP_CLIENT_MICROSOFT_API_KEY);
-            });
-
-            services.AddHttpClient(Globals.HTTP_CLIENT_MICROSOFT_API_XML, cli =>
-            {
-                cli.BaseAddress = new Uri(HTTP_CLIENT_MICROSOFT_API_URI);
-                cli.DefaultRequestHeaders.Add("Accept", "application/xml");
                 cli.DefaultRequestHeaders.Add("api-key", HTTP_CLIENT_MICROSOFT_API_KEY);
             });
 

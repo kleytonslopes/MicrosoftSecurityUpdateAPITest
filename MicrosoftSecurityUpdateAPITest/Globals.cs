@@ -11,7 +11,6 @@ namespace MicrosoftSecurityUpdateAPITest
         private static string _connectionString;
 
         public const string HTTP_CLIENT_MICROSOFT_API = "msrc_microsoft";
-        public const string HTTP_CLIENT_MICROSOFT_API_XML = "msrc_microsoft_xml";
         public static int Minutes => _minutes;
         public static string ConnectionString => _connectionString;
 

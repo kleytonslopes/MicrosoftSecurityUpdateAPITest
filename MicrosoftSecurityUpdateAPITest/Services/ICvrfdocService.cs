@@ -8,6 +8,6 @@ namespace MicrosoftSecurityUpdateAPITest.Services
 {
     public interface ICvrfdocService
     {
-        Task<Cvrfdoc> GetCvrfdocFromUrlAsync(string cvrfUrl);
+        Task<Cvrfdoc> GetCvrfdocFromUrlAsync(string cvrfId);
     }
 }
